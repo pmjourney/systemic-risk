@@ -30,16 +30,18 @@
   .legendbar{display:flex;align-items:center;justify-content:space-between;gap:18px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;margin-bottom:16px}
   .legend{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
   .swatch{width:34px;height:12px;border-radius:2px;border:1px solid rgba(24,51,58,.08)}
-  .s1{background:var(--low)} .s2{background:var(--mid)} .s3{background:var(--high)} .s4{background:var(--deep)}
+  .s1{background:var(--low)} .s2{background:#cfe1df} .s3{background:var(--mid)} .s4{background:var(--high)}
   .legend span.label{margin-left:2px}
   .hint{font-size:11px;color:var(--muted)}
+  .matrix-toolbar{margin-bottom:12px}
+  .matrix-toolbar-note{font-size:11px;line-height:1.5;color:var(--muted);max-width:860px}
   .matrix-shell{background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 8px 28px rgba(24,51,58,.05)}
   .matrix-scroll{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;scrollbar-width:thin;width:100%}
   table{border-collapse:separate;border-spacing:0;min-width:1120px;width:max-content}
   th,td{border-right:1px solid rgba(217,226,227,.75);border-bottom:1px solid rgba(217,226,227,.75)}
-  thead th{position:sticky;top:0;z-index:3;background:#f1f5f4;height:82px;padding:10px 7px;font-size:10px;font-weight:700;color:#496267;vertical-align:bottom}
+  thead th{position:sticky;top:0;z-index:3;background:#f1f5f4;height:172px;padding:10px 7px;font-size:10px;font-weight:700;color:#496267;vertical-align:bottom}
   thead th:first-child{left:0;z-index:5;text-align:left;width:245px;min-width:245px}
-  .col-label{writing-mode:vertical-rl;transform:rotate(180deg);height:65px;margin:auto;white-space:nowrap;letter-spacing:.01em}
+  .col-label{writing-mode:vertical-rl;transform:rotate(180deg);height:150px;margin:auto;white-space:nowrap;letter-spacing:.01em}
   tbody th{position:sticky;left:0;z-index:2;background:#fbfcfc;text-align:left;padding:15px 15px;font-family:Georgia,"Times New Roman",serif;font-size:15px;font-weight:500;line-height:1.2;width:245px;min-width:245px}
   tbody td{width:72px;min-width:72px;height:70px;padding:5px;text-align:center;cursor:pointer;transition:transform .12s ease,filter .12s ease;position:relative}
   tbody td:hover{filter:brightness(.96);transform:scale(.96);z-index:4}
@@ -84,7 +86,7 @@
   .modal .pair{font-size:13px;color:var(--muted)}
   .close{position:absolute;right:15px;top:13px;border:0;background:transparent;color:var(--muted);font-size:27px;line-height:1;cursor:pointer;padding:7px}
   .modal-body{padding:22px 28px 28px}
-  .density-box{margin-top:15px;padding:13px 14px;border:1px solid var(--line);border-radius:9px;background:#f7f9f8}
+  .density-box{margin-top:15px;margin-bottom:24px;padding:13px 14px;border:1px solid var(--line);border-radius:9px;background:#f7f9f8}
   .density-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
   .density-label{font-size:10px;text-transform:uppercase;letter-spacing:.11em;color:var(--accent);font-weight:700}
   .density-level{font-size:12px;font-weight:700;color:var(--ink)}
@@ -99,6 +101,7 @@
   .section p{font-size:13px;line-height:1.6;margin:0;color:#31494e}
   .section ul{margin:7px 0 0;padding-left:18px;color:#31494e}
   .section li{font-size:13px;line-height:1.5;margin:3px 0}
+  .guide-note{font-size:10px !important;line-height:1.45 !important;color:var(--muted) !important;margin-top:6px !important}
   .meadows{border-top:1px solid var(--line);padding-top:15px;font-size:11px;color:var(--muted)}
   .meadows b{color:var(--ink)}
   @media (max-width:900px){
@@ -122,7 +125,7 @@
     .subtitle{font-size:13px}
     .legendbar{padding:10px 0}
     .swatch{width:27px}
-    .matrix-toolbar-note{max-width:190px;line-height:1.35}
+    .matrix-toolbar-note{max-width:none;line-height:1.45}
     .modal-backdrop{padding:0;align-items:flex-end}
     .modal{width:100%;max-height:88vh;border-radius:17px 17px 0 0}
     .modal-head{padding:22px 20px 16px}
@@ -137,7 +140,7 @@
     <div>
       <div class="eyebrow">PM Journey · Systemic Risk</div>
       <h1>Systemic Risk Heatmap</h1>
-      <p class="subtitle">Armadilhas sistêmicas × pontos de alavancagem de Donella Meadows. Use a matriz para localizar onde uma dinâmica de projeto pode estar se formando — e aprofunde cada relação com um toque.</p>
+      <p class="subtitle">Armadilhas sistêmicas × pontos de alavancagem de Donella Meadows. Use a matriz para localizar onde uma dinâmica de projeto pode estar se formando e abra cada célula para aprofundar a relação.</p>
     </div>
     <div class="method"><b>Como ler:</b> a intensidade da célula é uma associação heurística entre a armadilha e a alavanca. Não representa probabilidade, severidade ou score de risco.</div>
   </header>
@@ -150,11 +153,11 @@
       <span class="swatch s3"></span>
       <span class="swatch s4"></span><span class="label">alta</span>
     </div>
-    <div class="hint">Clique em qualquer célula para abrir o diagnóstico.</div>
+    <div class="hint">Toque ou clique em qualquer célula para abrir o diagnóstico.</div>
   </div>
 
   <div class="matrix-toolbar">
-    <div class="matrix-toolbar-note"></div>
+    <div class="matrix-toolbar-note">As alavancas seguem a ordem de Meadows, do menos ao mais eficaz (12 a 1). A densidade mede a proximidade com cada armadilha, não a força da alavanca: transcender paradigmas é o ponto de maior alcance no livro, mas age de forma difusa sobre todas as armadilhas.</div>
     
   </div>
   <div class="matrix-shell" id="matrixShell">
@@ -202,8 +205,7 @@
       <div class="section"><h3>Pergunta de diagnóstico</h3><p id="question"></p></div>
       <div class="section"><h3>O que observar</h3><ul id="observe"></ul></div>
       <div class="section"><h3>Possível intervenção</h3><p id="intervention"></p></div>
-      <div class="section"><h3>Diretriz de longo prazo</h3><p id="guideline"></p></div>
-      <div class="meadows" id="meadows"></div>
+      <div class="section"><h3>Diretriz de longo prazo</h3><p id="guideline"></p><p class="guide-note">As diretrizes vêm do capítulo final de Pensando em Sistemas. A associação de cada diretriz a uma armadilha é uma leitura do PM Journey.</p></div>
     </div>
   </div>
 </div>
@@ -307,7 +309,7 @@ function densityInfo(score){
     return {
       level:"Alta",
       dots:3,
-      text:"A relação é direta e estrutural. A alavanca atua sobre um mecanismo que participa fortemente da formação ou manutenção da armadilha, tornando-a um ponto importante para investigação."
+      text:"A relação é direta e estrutural. A alavanca atua sobre um mecanismo que participa fortemente da formação ou manutenção da armadilha."
     };
   }
   if(score >= 3){
@@ -346,7 +348,6 @@ function openModal(ti,li){
   trap.obs.forEach(x=>{const liEl=document.createElement("li");liEl.textContent=x;ul.appendChild(liEl)});
   document.getElementById("intervention").textContent=trap.int;
   document.getElementById("guideline").textContent=trap.guide;
-  document.getElementById("meadows").innerHTML="<b>Meadows:</b> "+l[1];
   backdrop.classList.add("open");
   document.body.style.overflow="hidden";
 }
