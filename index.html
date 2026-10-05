@@ -34,8 +34,8 @@
   .legend span.label{margin-left:2px}
   .hint{font-size:11px;color:var(--muted)}
   .matrix-shell{background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 8px 28px rgba(24,51,58,.05)}
-  .matrix-scroll{overflow:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
-  table{border-collapse:separate;border-spacing:0;min-width:1120px;width:100%}
+  .matrix-scroll{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;scrollbar-width:thin;width:100%}
+  table{border-collapse:separate;border-spacing:0;min-width:1120px;width:max-content}
   th,td{border-right:1px solid rgba(217,226,227,.75);border-bottom:1px solid rgba(217,226,227,.75)}
   thead th{position:sticky;top:0;z-index:3;background:#f1f5f4;height:82px;padding:10px 7px;font-size:10px;font-weight:700;color:#496267;vertical-align:bottom}
   thead th:first-child{left:0;z-index:5;text-align:left;width:245px;min-width:245px}
@@ -59,8 +59,19 @@
   .mobile-cell{min-height:68px;border-radius:7px;padding:8px 6px;border:1px solid rgba(24,51,58,.06);cursor:pointer;text-align:left;font-size:10px;color:var(--ink)}
   .mobile-cell strong{display:block;font-size:11px;margin-bottom:5px;line-height:1.1}
   .mobile-cell span{font-size:9px;color:rgba(24,51,58,.72);line-height:1.1}
-  .footer{margin-top:13px;display:flex;justify-content:space-between;gap:20px;font-size:10px;color:var(--muted);line-height:1.45}
-  .footer b{color:var(--ink);font-weight:600}
+  .footer{margin-top:28px;padding:26px 26px 24px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,#fbfcfc 0%,#f4f7f6 100%);color:var(--ink)}
+  .footer-kicker{font-size:10px;text-transform:uppercase;letter-spacing:.13em;color:var(--accent);font-weight:700;margin-bottom:8px}
+  .footer h2{font-family:Georgia,serif;font-size:24px;font-weight:500;line-height:1.15;margin:0 0 8px}
+  .footer-intro{font-size:13px;line-height:1.6;color:#40565b;max-width:760px;margin:0 0 20px}
+  .footer-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:12px}
+  .footer-card{border:1px solid var(--line);border-radius:11px;background:var(--white);padding:15px 16px;text-decoration:none;display:block;color:var(--ink);transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease}
+  .footer-card:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(24,51,58,.07);border-color:#b9cecc}
+  .footer-card .card-kicker{font-size:9px;text-transform:uppercase;letter-spacing:.11em;color:var(--accent);font-weight:700;margin-bottom:6px}
+  .footer-card h3{font-family:Georgia,serif;font-size:17px;font-weight:500;margin:0 0 5px;line-height:1.15}
+  .footer-card p{font-size:11px;line-height:1.5;color:var(--muted);margin:0}
+  .footer-card .arrow{display:inline-block;margin-top:9px;font-size:11px;color:var(--accent);font-weight:700}
+  .footer-note{margin-top:17px;padding-top:15px;border-top:1px solid var(--line);font-size:10px;line-height:1.5;color:var(--muted)}
+  .footer-note b{color:var(--ink);font-weight:600}
   .modal-backdrop{position:fixed;inset:0;background:rgba(14,34,38,.48);display:none;align-items:center;justify-content:center;padding:24px;z-index:20;backdrop-filter:blur(4px)}
   .modal-backdrop.open{display:flex}
   .modal{width:min(680px,100%);max-height:min(86vh,820px);overflow:auto;background:var(--white);border-radius:16px;box-shadow:var(--shadow);position:relative}
@@ -98,9 +109,10 @@
     .legend{margin-bottom:7px}
     .hint{display:block}
     .matrix-shell{border-radius:10px}
-    table{min-width:1030px}
+    table{min-width:1120px;width:max-content}
     thead th:first-child,tbody th{width:190px;min-width:190px}
     .footer{display:block}
+    .footer-grid{grid-template-columns:1fr}
     .footer > div+div{margin-top:5px}
     .matrix-toolbar{margin-bottom:8px}
   }
@@ -111,7 +123,6 @@
     .legendbar{padding:10px 0}
     .swatch{width:27px}
     .matrix-toolbar-note{max-width:190px;line-height:1.35}
-    .expand-btn{padding:8px 9px}
     .modal-backdrop{padding:0;align-items:flex-end}
     .modal{width:100%;max-height:88vh;border-radius:17px 17px 0 0}
     .modal-head{padding:22px 20px 16px}
@@ -143,21 +154,22 @@
   </div>
 
   <div class="matrix-toolbar">
-    <div class="matrix-toolbar-note">A matriz preserva as 8 armadilhas e as 12 alavancas. Deslize horizontalmente no celular.</div>
-    <button class="expand-btn" id="expandBtn">Expandir matriz</button>
+    <div class="matrix-toolbar-note"></div>
+    
   </div>
   <div class="matrix-shell" id="matrixShell">
-    <div class="matrix-scroll">
+    <div class="matrix-scroll" aria-label="Matriz de armadilhas sistêmicas e pontos de alavancagem">
       <table id="matrix">
-        <thead><tr id="headRow"><th>Armadilhas sistêmicas</th></tr></thead>
-        <tbody id="bodyRows"></tbody>
+        <thead><tr id="headRow"><th>Armadilhas sistêmicas</th><th title="Números"><div class="col-label">Números</div></th><th title="Buffers"><div class="col-label">Buffers</div></th><th title="Estruturas"><div class="col-label">Estruturas</div></th><th title="Atrasos"><div class="col-label">Atrasos</div></th><th title="Feedback de equilíbrio"><div class="col-label">Feedback de equilíbrio</div></th><th title="Feedback de reforço"><div class="col-label">Feedback de reforço</div></th><th title="Informação"><div class="col-label">Informação</div></th><th title="Regras"><div class="col-label">Regras</div></th><th title="Auto-organização"><div class="col-label">Auto-organização</div></th><th title="Objetivos"><div class="col-label">Objetivos</div></th><th title="Paradigmas"><div class="col-label">Paradigmas</div></th><th title="Transcender paradigmas"><div class="col-label">Transcender paradigmas</div></th></tr></thead>
+        <tbody id="bodyRows"><tr><th>Resistência à política</th><td class="heat-2" role="button" tabindex="0" data-ti="0" data-li="0" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="0" data-li="1" title="Abrir diagnóstico"></td><td class="heat-2" role="button" tabindex="0" data-ti="0" data-li="2" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="0" data-li="3" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="0" data-li="4" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="0" data-li="5" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="0" data-li="6" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="0" data-li="7" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="0" data-li="8" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="0" data-li="9" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="0" data-li="10" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="0" data-li="11" title="Abrir diagnóstico"></td></tr><tr><th>Tragédia dos comuns</th><td class="heat-3" role="button" tabindex="0" data-ti="1" data-li="0" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="1" data-li="1" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="1" data-li="2" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="1" data-li="3" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="1" data-li="4" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="1" data-li="5" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="1" data-li="6" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="1" data-li="7" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="1" data-li="8" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="1" data-li="9" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="1" data-li="10" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="1" data-li="11" title="Abrir diagnóstico"></td></tr><tr><th>Desvio para um baixo desempenho</th><td class="heat-5" role="button" tabindex="0" data-ti="2" data-li="0" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="2" data-li="1" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="2" data-li="2" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="2" data-li="3" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="2" data-li="4" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="2" data-li="5" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="2" data-li="6" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="2" data-li="7" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="2" data-li="8" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="2" data-li="9" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="2" data-li="10" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="2" data-li="11" title="Abrir diagnóstico"></td></tr><tr><th>Escalada</th><td class="heat-3" role="button" tabindex="0" data-ti="3" data-li="0" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="3" data-li="1" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="3" data-li="2" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="3" data-li="3" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="3" data-li="4" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="3" data-li="5" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="3" data-li="6" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="3" data-li="7" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="3" data-li="8" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="3" data-li="9" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="3" data-li="10" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="3" data-li="11" title="Abrir diagnóstico"></td></tr><tr><th>Sucesso para os bem-sucedidos</th><td class="heat-5" role="button" tabindex="0" data-ti="4" data-li="0" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="4" data-li="1" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="4" data-li="2" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="4" data-li="3" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="4" data-li="4" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="4" data-li="5" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="4" data-li="6" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="4" data-li="7" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="4" data-li="8" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="4" data-li="9" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="4" data-li="10" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="4" data-li="11" title="Abrir diagnóstico"></td></tr><tr><th>Transferência do ônus para o interventor</th><td class="heat-3" role="button" tabindex="0" data-ti="5" data-li="0" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="5" data-li="1" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="5" data-li="2" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="5" data-li="3" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="5" data-li="4" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="5" data-li="5" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="5" data-li="6" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="5" data-li="7" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="5" data-li="8" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="5" data-li="9" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="5" data-li="10" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="5" data-li="11" title="Abrir diagnóstico"></td></tr><tr><th>Violação de regras</th><td class="heat-5" role="button" tabindex="0" data-ti="6" data-li="0" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="6" data-li="1" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="6" data-li="2" title="Abrir diagnóstico"></td><td class="heat-1" role="button" tabindex="0" data-ti="6" data-li="3" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="6" data-li="4" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="6" data-li="5" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="6" data-li="6" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="6" data-li="7" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="6" data-li="8" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="6" data-li="9" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="6" data-li="10" title="Abrir diagnóstico"></td><td class="heat-2" role="button" tabindex="0" data-ti="6" data-li="11" title="Abrir diagnóstico"></td></tr><tr><th>Busca pelo objetivo errado</th><td class="heat-5" role="button" tabindex="0" data-ti="7" data-li="0" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="7" data-li="1" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="7" data-li="2" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="7" data-li="3" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="7" data-li="4" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="7" data-li="5" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="7" data-li="6" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="7" data-li="7" title="Abrir diagnóstico"></td><td class="heat-3" role="button" tabindex="0" data-ti="7" data-li="8" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="7" data-li="9" title="Abrir diagnóstico"></td><td class="heat-5" role="button" tabindex="0" data-ti="7" data-li="10" title="Abrir diagnóstico"></td><td class="heat-2" role="button" tabindex="0" data-ti="7" data-li="11" title="Abrir diagnóstico"></td></tr></tbody>
       </table>
     </div>
   </div>
 
   <div class="footer">
-    <div><b>Meadows:</b> as alavancas estão ordenadas da intervenção mais superficial à mais profunda.</div>
-    <div>PM Journey · ferramenta de reflexão, não de pontuação automática.</div>
+    <div class="footer-kicker">PM Journey · Profissional em evolução</div>
+    <p class="footer-line"><a href="https://sextante.com.br/products/pensando-em-sistemas" target="_blank" rel="noopener">Pensando em Sistemas</a> — Donella H. Meadows · 1ª ed. · Rio de Janeiro: Sextante, 2022 · tradução de Paulo Afonso.</p>
+    <p class="footer-line"><a href="https://www.linkedin.com/in/icarosantos/recent-activity/all/" target="_blank" rel="noopener">Conheça mais conteúdos do PM Journey →</a></p>
   </div>
 </div>
 
@@ -263,49 +275,15 @@ const traps = [
    guide:"Expanda os horizontes temporais."}
 ];
 
-const head = document.getElementById("headRow");
-const body = document.getElementById("bodyRows");
-function heatClass(score){ return "heat-" + Math.max(1,Math.min(6,score)); }
-
-leverage.forEach(l=>{
-  const th=document.createElement("th");
-  th.title=l[1];
-  th.innerHTML='<div class="col-label">'+l[0]+'</div>';
-  head.appendChild(th);
-});
-
-traps.forEach((trap,ti)=>{
-  const tr=document.createElement("tr");
-  const th=document.createElement("th");
-  th.textContent=trap.name;
-  tr.appendChild(th);
-  trap.scores.forEach((score,li)=>{
-    const td=document.createElement("td");
-    td.className=heatClass(score);
-    td.setAttribute("role","button");
-    td.setAttribute("tabindex","0");
-    td.title="Abrir diagnóstico";
-    td.addEventListener("click",()=>openModal(ti,li));
-    td.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openModal(ti,li)}})
-    tr.appendChild(td);
+document.querySelectorAll("#matrix tbody td").forEach(td=>{
+  const ti=Number(td.dataset.ti), li=Number(td.dataset.li);
+  td.addEventListener("click",()=>openModal(ti,li));
+  td.addEventListener("keydown",e=>{
+    if(e.key==="Enter" || e.key===" "){
+      e.preventDefault();
+      openModal(ti,li);
+    }
   });
-  body.appendChild(tr);
-
-});
-
-const matrixShell=document.getElementById("matrixShell");
-const expandBtn=document.getElementById("expandBtn");
-expandBtn.addEventListener("click",()=>{
-  const full=matrixShell.classList.toggle("fullscreen");
-  document.body.classList.toggle("matrix-fullscreen",full);
-  expandBtn.textContent=full ? "Fechar expansão" : "Expandir matriz";
-});
-document.addEventListener("keydown",e=>{
-  if(e.key==="Escape" && matrixShell.classList.contains("fullscreen")){
-    matrixShell.classList.remove("fullscreen");
-    document.body.classList.remove("matrix-fullscreen");
-    expandBtn.textContent="Expandir matriz";
-  }
 });
 
 const backdrop=document.getElementById("backdrop");
